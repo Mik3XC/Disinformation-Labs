@@ -10,6 +10,12 @@ Disinformation Labs™ is a standalone Syndrome™ companion app. It combines a 
 
 [Download the latest release](https://github.com/Rali0s/Disinformation-Labs/releases/latest) · [User guide](docs/user-guide.md) · [Release notes](docs/releases/v1.5.1.md)
 
+## Workspace preview
+
+![Disinformation Labs dossier workspace showing Majestic 12, evidence assessment, and source references](docs/assets/dossier-workspace.jpg)
+
+The Majestic 12 dossier in the macOS app, with the blue alien emblem, archive navigation, evidence assessment, and source references.
+
 ## What it does
 
 | Workspace | Capabilities |
