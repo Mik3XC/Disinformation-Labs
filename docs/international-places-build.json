@@ -1,0 +1,18 @@
+{
+  "source": "https://download.geonames.org/export/dump/cities500.zip",
+  "adminSource": "https://download.geonames.org/export/dump/admin1CodesASCII.txt",
+  "license": "CC BY 4.0",
+  "archiveSHA256": "51e6a12a36eb8bfba9005dd2cc4a79002092d2e2074de8bd53edb7424bc70181",
+  "counts": {
+    "AU": 4901,
+    "CA": 3297,
+    "GB": 5918,
+    "IE": 566,
+    "IN": 7114,
+    "NZ": 732,
+    "SG": 121,
+    "ZA": 989
+  },
+  "bytes": 1269493,
+  "builtAtUTC": "2026-09-14T20:59:25.546612+00:00"
+}

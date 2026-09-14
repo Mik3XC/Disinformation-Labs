@@ -1,0 +1,11 @@
+.build/
+.DS_Store
+dist/
+tmp/
+output/
+.swiftpm/
+.env
+.env.*
+*.pem
+*.p12
+docs/Gemini-concept-brief.txt

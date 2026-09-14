@@ -1,0 +1,26 @@
+GEOGRAPHIC DATA CREDITS
+
+United States: 2025 US Census National Places Gazetteer
+https://www.census.gov/geographies/reference-files/time-series/geo/gazetteer-files.2025.html
+Original GEOID, state, representative latitude and longitude retained.
+
+International places: GeoNames geographical database
+https://www.geonames.org/
+https://download.geonames.org/export/dump/cities500.zip
+https://download.geonames.org/export/dump/admin1CodesASCII.txt
+License: Creative Commons Attribution 4.0 International
+https://creativecommons.org/licenses/by/4.0/
+
+Adapted for Syndrome Disinformation Workshop on 2026-09-14. Selected GB, CA,
+AU, NZ, IE, IN, SG and ZA entries; used supplied ASCII place names and English
+administrative-region names; retained coordinates and GeoNames IDs (with a
+gn- prefix). Dataset includes population over 500 or qualifying administrative
+seats; not every locality. GeoNames supplies data without warranties of
+accuracy, timeliness, or completeness. No endorsement by GeoNames is implied.
+
+Offline coverage-map outlines: Natural Earth 1:50m countries, public domain.
+https://www.naturalearthdata.com/about/terms-of-use/
+https://github.com/nvkelso/natural-earth-vector
+Selected supported countries and Puerto Rico, retained exterior rings only,
+rounded coordinates to three decimal places. Downloaded 2026-09-14.
+Context outlines do not determine regional news assignments or legal borders.

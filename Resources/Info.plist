@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0"><dict>
+<key>CFBundleName</key><string>Disinformation Labs</string>
+<key>CFBundleDisplayName</key><string>Syndrome™ Disinformation Labs</string>
+<key>CFBundleIdentifier</key><string>com.syndrome.disinformation-workshop</string>
+<key>CFBundleExecutable</key><string>DisinformationWorkshop</string>
+<key>CFBundlePackageType</key><string>APPL</string>
+<key>CFBundleShortVersionString</key><string>1.5.1</string>
+<key>CFBundleVersion</key><string>7</string>
+<key>CFBundleIconFile</key><string>Workshop</string>
+<key>LSMinimumSystemVersion</key><string>14.0</string>
+<key>NSHighResolutionCapable</key><true/>
+<key>NSPrincipalClass</key><string>NSApplication</string>
+<key>NSHumanReadableCopyright</key><string>Syndrome™ · Fictional dossier and memorandum studio</string>
+</dict></plist>

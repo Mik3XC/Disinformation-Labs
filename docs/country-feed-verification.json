@@ -1,0 +1,86 @@
+{
+  "verifiedAtUTC": "2026-09-14T20:59:25.547191+00:00",
+  "editions": [
+    {
+      "country": "US",
+      "url": "https://news.google.com/rss?hl=en-US&gl=US&ceid=US%3Aen",
+      "status": 200,
+      "bytes": 125537,
+      "language": "en-US",
+      "channel": "Top stories - Google News",
+      "items": 38
+    },
+    {
+      "country": "GB",
+      "url": "https://news.google.com/rss?hl=en-GB&gl=GB&ceid=GB%3Aen",
+      "status": 200,
+      "bytes": 111401,
+      "language": "en-GB",
+      "channel": "Top stories - Google News",
+      "items": 38
+    },
+    {
+      "country": "CA",
+      "url": "https://news.google.com/rss?hl=en-CA&gl=CA&ceid=CA%3Aen",
+      "status": 200,
+      "bytes": 104028,
+      "language": "en-CA",
+      "channel": "Top stories - Google News",
+      "items": 38
+    },
+    {
+      "country": "AU",
+      "url": "https://news.google.com/rss?hl=en-AU&gl=AU&ceid=AU%3Aen",
+      "status": 200,
+      "bytes": 96524,
+      "language": "en-AU",
+      "channel": "Top stories - Google News",
+      "items": 38
+    },
+    {
+      "country": "NZ",
+      "url": "https://news.google.com/rss?hl=en-NZ&gl=NZ&ceid=NZ%3Aen",
+      "status": 200,
+      "bytes": 79579,
+      "language": "en-NZ",
+      "channel": "Top stories - Google News",
+      "items": 38
+    },
+    {
+      "country": "IE",
+      "url": "https://news.google.com/rss?hl=en-IE&gl=IE&ceid=IE%3Aen",
+      "status": 200,
+      "bytes": 91102,
+      "language": "en-IE",
+      "channel": "Top stories - Google News",
+      "items": 38
+    },
+    {
+      "country": "IN",
+      "url": "https://news.google.com/rss?hl=en-IN&gl=IN&ceid=IN%3Aen",
+      "status": 200,
+      "bytes": 158559,
+      "language": "en-IN",
+      "channel": "Top stories - Google News",
+      "items": 38
+    },
+    {
+      "country": "SG",
+      "url": "https://news.google.com/rss?hl=en-SG&gl=SG&ceid=SG%3Aen",
+      "status": 200,
+      "bytes": 91545,
+      "language": "en-SG",
+      "channel": "Top stories - Google News",
+      "items": 38
+    },
+    {
+      "country": "ZA",
+      "url": "https://news.google.com/rss?hl=en-ZA&gl=ZA&ceid=ZA%3Aen",
+      "status": 200,
+      "bytes": 97610,
+      "language": "en-ZA",
+      "channel": "Top stories - Google News",
+      "items": 37
+    }
+  ]
+}
