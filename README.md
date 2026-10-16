@@ -8,7 +8,7 @@
 
 Disinformation Labs™ is a standalone Syndrome™ companion app. It combines a Richard Doty / MJ-12 dossier archive, country-specific news snapshots, transparent headline comparisons, regional coverage maps, and a clearly labeled fictional memorandum studio.
 
-[Download the latest release](https://github.com/Mik3XC/Disinformation-Labs/releases/latest) · [User guide](docs/user-guide.md) · [Release notes](docs/releases/v1.5.1.md)
+[Download the latest release](https://github.com/Mik3XC/Disinformation-Labs/releases/latest) · [User guide](docs/user-guide.md) · [Release notes](docs/releases/v1.6.0.md)
 
 ## Workspace preview
 
