@@ -6,6 +6,7 @@ import WorkshopCore
 enum PaperRenderer {
     static let pageSize = CGSize(width: 612, height: 792)
     static let textRect = CGRect(x: 54, y: 244, width: 504, height: 434)
+    static func bodyRect(_ draft: Draft) -> CGRect { draft.isFOIAMockup ? FOIAPaperRenderer.textRect : textRect }
     static func font(_ draft: Draft) -> NSFont {
         switch draft.medium {
         case .typewriter: return NSFont(name: "Courier", size: 12) ?? .monospacedSystemFont(ofSize: 12, weight: .regular)
@@ -15,9 +16,21 @@ enum PaperRenderer {
     }
     static func attributed(_ draft: Draft) -> NSAttributedString {
         let paragraph = NSMutableParagraphStyle(); paragraph.lineSpacing = 4; paragraph.paragraphSpacing = 4
-        return NSAttributedString(string: draft.redactedBody.isEmpty ? " " : draft.redactedBody, attributes: [
+        let text = NSMutableAttributedString(string: draft.redactedBody.isEmpty ? " " : draft.redactedBody, attributes: [
             .font: font(draft), .foregroundColor: NSColor(white: 0.12 + draft.distress * 0.12, alpha: 1), .paragraphStyle: paragraph
         ])
+        if draft.isFOIAMockup {
+            let matches = text.string as NSString
+            var search = NSRange(location: 0, length: matches.length)
+            while search.length > 0 {
+                let range = matches.range(of: "[REDACTED]", range: search)
+                guard range.location != NSNotFound else { break }
+                // Only replacement markers exist in the PDF; original words never enter the renderer.
+                text.addAttributes([.foregroundColor: NSColor.black, .backgroundColor: NSColor.black], range: range)
+                search = NSRange(location: NSMaxRange(range), length: matches.length - NSMaxRange(range))
+            }
+        }
+        return text
     }
     static func pages(_ draft: Draft) -> [NSAttributedString] {
         let storage = NSTextStorage(attributedString: attributed(draft))
@@ -25,7 +38,7 @@ enum PaperRenderer {
         var result: [NSAttributedString] = []
         var consumed = 0
         while consumed < storage.length {
-            let container = NSTextContainer(containerSize: textRect.size)
+            let container = NSTextContainer(containerSize: bodyRect(draft).size)
             container.lineFragmentPadding = 0; manager.addTextContainer(container)
             manager.ensureLayout(for: container)
             let glyphs = manager.glyphRange(for: container)
@@ -34,9 +47,12 @@ enum PaperRenderer {
             result.append(storage.attributedSubstring(from: range))
             consumed = NSMaxRange(range)
         }
-        return result.isEmpty ? [NSAttributedString(string: " ")] : result
+        if result.isEmpty { result = [NSAttributedString(string: " ")] }
+        if draft.isFOIAMockup && draft.foiaSettings.includeCoverSheet { result.insert(NSAttributedString(string: ""), at: 0) }
+        return result
     }
     static func draw(draft: Draft, page: NSAttributedString, index: Int, count: Int) {
+        if draft.isFOIAMockup { FOIAPaperRenderer.draw(draft: draft, page: page, index: index, count: count); return }
         let paper: NSColor
         switch draft.medium {
         case .typewriter: paper = NSColor(red: 0.96, green: 0.935 - draft.distress * 0.04, blue: 0.86 - draft.distress * 0.07, alpha: 1)
@@ -86,7 +102,9 @@ enum PaperRenderer {
         let data = NSMutableData()
         guard let consumer = CGDataConsumer(data: data as CFMutableData) else { throw CocoaError(.fileWriteUnknown) }
         var box = CGRect(origin: .zero, size: pageSize)
-        let metadata = [kCGPDFContextTitle as String: draft.title, kCGPDFContextCreator as String: "Syndrome Disinformation Workshop - Fictional Simulation"] as CFDictionary
+        let metadata = [kCGPDFContextTitle as String: draft.isFOIAMockup ? "FICTIONAL FOIA MOCKUP - " + draft.title : draft.title,
+                        kCGPDFContextCreator as String: "Disinformation Labs - Fictional Simulation",
+                        kCGPDFContextSubject as String: "Creative study copy - not an authentic government record"] as CFDictionary
         guard let context = CGContext(consumer: consumer, mediaBox: &box, metadata) else { throw CocoaError(.fileWriteUnknown) }
         let content = pages(draft)
         for (index, page) in content.enumerated() {

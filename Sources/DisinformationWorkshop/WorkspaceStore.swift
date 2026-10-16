@@ -52,6 +52,11 @@ final class WorkspaceStore: ObservableObject {
         draft.id = UUID(); draft.title = String((draft.title + " / copy").prefix(100)); draft.modified = Date()
         workspace.drafts.insert(draft, at: 0); selectedDraftID = draft.id; save()
     }
+    func createFOIAMockup() {
+        var draft = Draft(title: "Untitled FOIA mockup", recipient: "Fictional records review group", reference: "RECORD-001", body: "MEMORANDUM FOR THE RECORD\n\nBegin your fictional record here.", medium: .xerox)
+        draft.documentLayout = .foia; draft.foia = FOIAMockup()
+        workspace.drafts.insert(draft, at: 0); selectedDraftID = draft.id; save()
+    }
     func deleteSelected() {
         workspace.drafts.removeAll { $0.id == selectedDraftID }
         selectedDraftID = workspace.drafts.first?.id; save()
@@ -99,7 +104,7 @@ final class WorkspaceStore: ObservableObject {
         guard let draft = selectedDraft else { return }
         let panel = NSSavePanel(); panel.allowedContentTypes = pdf ? [.pdf] : [.plainText]
         let name = draft.title.replacingOccurrences(of: "/", with: "-").replacingOccurrences(of: ":", with: "-")
-        panel.nameFieldStringValue = (name.isEmpty ? "Workshop-memo" : name) + (pdf ? ".pdf" : ".txt")
+        panel.nameFieldStringValue = (draft.isFOIAMockup ? "FICTIONAL-FOIA-" : "") + (name.isEmpty ? "Workshop-memo" : name) + (pdf ? ".pdf" : ".txt")
         guard panel.runModal() == .OK, let url = panel.url else { return }
         do {
             if pdf { try PaperRenderer.pdf(draft: draft).write(to: url, options: .atomic) }

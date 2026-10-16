@@ -24,7 +24,7 @@ struct DisinformationWorkshopApp: App {
                     Button("About Disinformation Labs") {
                         NSApp.orderFrontStandardAboutPanel(options: [
                             .applicationName: "Syndrome™ Disinformation Labs",
-                            .applicationVersion: "1.5.1",
+                            .applicationVersion: "1.6.0",
                             .credits: NSAttributedString(string: "A dossier archive, news research observatory, and fictional memorandum studio.\nA separate Syndrome companion app.\n\nThe Doty files · MJ12")
                         ])
                     }
@@ -121,6 +121,7 @@ enum SmokeChecks {
         let projectReload = NewsStore(fileURL: newsURL)
         try check(projectReload.selectedProject?.title == "Native persistence fixture", "Publication project survives relaunch")
         try check(projectReload.selectedProject?.reportedPageViews == 120, "Publication analytics survive relaunch")
+        checks += try FOIASmokeChecks.run(output: output)
         print("PASS: \(checks) native PDF and workspace checks. Sample PDFs: \(output.path)")
     }
 }

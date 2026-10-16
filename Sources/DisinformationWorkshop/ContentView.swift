@@ -171,16 +171,19 @@ struct ContentView: View {
     private var draftList: some View {
         VStack(alignment: .leading, spacing: 0) {
             Eyebrow(text: "YOUR WORKSPACE").padding(.top, 29)
-            Text("Memoranda").font(.system(size: 23, weight: .medium)).padding(.top, 9)
+            Text("Documents").font(.system(size: 23, weight: .medium)).padding(.top, 9)
             Text("\(store.workspace.drafts.count) locally saved \(store.workspace.drafts.count == 1 ? "draft" : "drafts")").font(.system(size: 11)).foregroundStyle(Theme.muted).padding(.top, 7)
-            Button { store.create() } label: { Label("New memorandum", systemImage: "plus") }.buttonStyle(ActionButton(prominent: true)).padding(.vertical, 20)
+            VStack(alignment: .leading, spacing: 9) {
+                Button { store.create() } label: { Label("New memorandum", systemImage: "plus") }.buttonStyle(ActionButton(prominent: true))
+                Button { store.createFOIAMockup() } label: { Label("New FOIA mockup", systemImage: "doc.badge.plus") }.buttonStyle(ActionButton())
+            }.padding(.vertical, 20)
             TextField("Search drafts", text: $draftQuery).textFieldStyle(.roundedBorder).focused($searchFocused).padding(.bottom, 15)
             ScrollView {
                 LazyVStack(spacing: 9) {
                     ForEach(store.workspace.drafts.filter { draftQuery.isEmpty || $0.title.localizedCaseInsensitiveContains(draftQuery) || $0.body.localizedCaseInsensitiveContains(draftQuery) }) { draft in
                         Button { store.selectedDraftID = draft.id } label: {
                             VStack(alignment: .leading, spacing: 10) {
-                                HStack { Image(systemName: "doc.text").foregroundStyle(Theme.accent); Spacer(); Eyebrow(text: "DRAFT") }
+                                HStack { Image(systemName: "doc.text").foregroundStyle(Theme.accent); Spacer(); Eyebrow(text: draft.isFOIAMockup ? "FOIA MOCKUP" : "DRAFT") }
                                 Text(draft.title.isEmpty ? "Untitled memorandum" : draft.title).font(.system(size: 15, weight: .medium)).lineLimit(2)
                                 Text(draft.medium.rawValue).font(.system(size: 10)).foregroundStyle(Theme.muted)
                                 Text(draft.modified, style: .date).font(.system(size: 10, design: .monospaced)).foregroundStyle(Theme.muted)

@@ -15,10 +15,10 @@ struct WorkshopView: View {
                 Menu {
                     Button("Export PDF…") { store.exportDraft(pdf: true) }
                     Button("Export plain text…") { store.exportDraft(pdf: false) }
-                } label: { Label("Export memo", systemImage: "square.and.arrow.up") }.menuStyle(.borderlessButton).fixedSize().padding(9).background(Theme.accent.opacity(0.12), in: RoundedRectangle(cornerRadius: 6))
+                } label: { Label(draft.isFOIAMockup ? "Export mockup" : "Export memo", systemImage: "square.and.arrow.up") }.menuStyle(.borderlessButton).fixedSize().padding(9).background(Theme.accent.opacity(0.12), in: RoundedRectangle(cornerRadius: 6))
             }.padding(.bottom, 17)
             HStack(alignment: .firstTextBaseline) {
-                Text("Disinformation Workshop").font(.system(size: 27, weight: .medium, design: .serif))
+                Text(draft.isFOIAMockup ? "FOIA Mockup Studio" : "Disinformation Workshop").font(.system(size: 27, weight: .medium, design: .serif))
                 Spacer()
                 Eyebrow(text: "STUDIO / 01")
             }
@@ -36,10 +36,19 @@ struct WorkshopView: View {
         .onChange(of: draft.body) { _, _ in pageIndex = 0 }
         .onChange(of: draft.redaction) { _, _ in pageIndex = 0 }
         .onChange(of: draft.medium) { _, _ in pageIndex = 0 }
+        .onChange(of: draft.documentLayout) { _, _ in pageIndex = 0 }
+        .onChange(of: draft.foia?.includeCoverSheet) { _, _ in pageIndex = 0 }
     }
     private var compose: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 20) {
+                VStack(alignment: .leading, spacing: 9) {
+                    Eyebrow(text: "DOCUMENT LAYOUT")
+                    Picker("Document layout", selection: Binding(get: { draft.documentLayout ?? .memorandum }, set: {
+                        draft.documentLayout = $0
+                        if $0 == .foia && draft.foia == nil { draft.foia = FOIAMockup() }
+                    })) { ForEach(DocumentLayout.allCases) { Text($0.rawValue).tag($0) } }.pickerStyle(.segmented)
+                }
                 HStack(alignment: .top, spacing: 16) {
                     field("DOCUMENT TITLE", text: limited(\Draft.title, 100))
                     field("REFERENCE", text: limited(\Draft.reference, 60)).frame(width: 160)
@@ -50,11 +59,12 @@ struct WorkshopView: View {
                         Eyebrow(text: "PRINT MEDIUM")
                         Picker("Print medium", selection: $draft.medium) { ForEach(Medium.allCases) { Text($0.rawValue).tag($0) } }.labelsHidden().frame(maxWidth: .infinity, alignment: .leading)
                     }
-                    VStack(alignment: .leading, spacing: 9) {
+                    if !draft.isFOIAMockup { VStack(alignment: .leading, spacing: 9) {
                         Eyebrow(text: "LETTERHEAD")
                         Picker("Letterhead", selection: $draft.header) { ForEach(MemoHeader.allCases) { Text($0.rawValue).tag($0) } }.labelsHidden().frame(maxWidth: .infinity, alignment: .leading)
-                    }
+                    } }
                 }
+                if draft.isFOIAMockup { foiaFields }
                 VStack(alignment: .leading, spacing: 10) {
                     HStack { Eyebrow(text: "MEMORANDUM BODY"); Spacer(); Text("\(draft.body.count.formatted()) / 30,000").font(.system(size: 9, design: .monospaced)).foregroundStyle(Theme.muted) }
                     TextEditor(text: limited(\Draft.body, Draft.bodyLimit)).font(.system(size: 12, design: .monospaced)).lineSpacing(5)
@@ -78,6 +88,27 @@ struct WorkshopView: View {
                 }
             }.padding(.vertical, 24)
         }
+    }
+    private var foiaFields: some View {
+        VStack(alignment: .leading, spacing: 14) {
+            field("FICTIONAL RECORDS OFFICE", text: foiaText(\.office, limit: 60))
+            HStack(spacing: 16) {
+                field("RECORD DATE (TEXT)", text: foiaText(\.recordDate, limit: 24))
+                field("MOCK RELEASE DATE (TEXT)", text: foiaText(\.releaseDate, limit: 24))
+            }
+            field("WITHHOLDING LABEL (SIMULATED)", text: foiaText(\.withholdingLabel, limit: 32))
+            Toggle("Include archive cover sheet", isOn: Binding(get: { draft.foiaSettings.includeCoverSheet }, set: {
+                var value = draft.foiaSettings; value.includeCoverSheet = $0; draft.foia = value
+            })).font(.system(size: 12))
+            Text("\(draft.mockRecordID) · Each page carries fixed mockup markings. Redactions replace body words before export; metadata remains visible.")
+                .font(.system(size: 10)).foregroundStyle(Theme.muted)
+        }.padding(16).background(Theme.panel, in: RoundedRectangle(cornerRadius: 7))
+    }
+    private func foiaText(_ path: WritableKeyPath<FOIAMockup, String>, limit: Int) -> Binding<String> {
+        Binding(get: { (draft.foia ?? FOIAMockup())[keyPath: path] }, set: {
+            var value = draft.foia ?? FOIAMockup()
+            value[keyPath: path] = String($0.replacingOccurrences(of: "\n", with: " ").prefix(limit)); draft.foia = value
+        })
     }
     private var preview: some View {
         let content = pages

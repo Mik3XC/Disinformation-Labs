@@ -67,6 +67,9 @@ public struct Draft: Identifiable, Codable, Equatable {
     public var redaction: Double
     public var modified: Date
     public var sourceDossierID: String?
+    // Optional fields preserve compatibility with existing workspace archives.
+    public var documentLayout: DocumentLayout?
+    public var foia: FOIAMockup?
     public static let bodyLimit = 30_000
 
     public init(id: UUID = UUID(), title: String = "Untitled memorandum", recipient: String = "Special study group", reference: String = "MJ12-001", body: String = "", medium: Medium = .typewriter, header: MemoHeader = .majestic, distress: Double = 0.35, redaction: Double = 0, modified: Date = Date(), sourceDossierID: String? = nil) {
@@ -79,13 +82,19 @@ public struct Draft: Identifiable, Codable, Equatable {
     }
     public var redactedBody: String { Redaction.apply(body, level: redaction) }
     public var plainText: String {
-        "FICTIONAL SIMULATION - SYNDROME DISINFORMATION WORKSHOP\n\n\(header.rawValue.uppercased())\n\(title)\nTO: \(recipient)\nREF: \(reference)\n\n\(redactedBody)\n\nCREATIVE STUDY COPY - NOT AN AUTHENTIC GOVERNMENT RECORD\n"
+        let metadata: String
+        if isFOIAMockup {
+            let settings = foiaSettings
+            metadata = "FOIA MOCKUP / NOT A GOVERNMENT RELEASE\n\(settings.office) / FICTIONAL OFFICE\n\(mockReleaseStatus)\nMOCK RECORD: \(mockRecordID)\nRECORD DATE: \(settings.recordDate)\nSIMULATED RELEASE DATE: \(settings.releaseDate)\nWITHHOLDING LABEL (SIMULATED): \(settings.withholdingLabel)"
+        } else { metadata = header.rawValue.uppercased() }
+        return "FICTIONAL SIMULATION - SYNDROME DISINFORMATION LABS\n\n\(metadata)\n\(title)\nTO: \(recipient)\nREF: \(reference)\n\n\(redactedBody)\n\nCREATIVE STUDY COPY - NOT AN AUTHENTIC GOVERNMENT RECORD\n"
     }
     public mutating func normalize() {
         title = String(title.prefix(100)); recipient = String(recipient.prefix(120)); reference = String(reference.prefix(60))
         body = String(body.prefix(Self.bodyLimit))
         distress = distress.isFinite ? min(1, max(0, distress)) : 0
         redaction = redaction.isFinite ? min(1, max(0, redaction)) : 0
+        foia?.normalize()
     }
 }
 

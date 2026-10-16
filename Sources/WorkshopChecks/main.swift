@@ -43,6 +43,7 @@ runSimilarityChecks()
 runCountryChecks()
 runCoverageChecks()
 runPublicationChecks()
+runFOIAMockupChecks()
 print("PASS: \(count) model checks")
 if CommandLine.arguments.contains("--live-news") {
     Task.detached {

@@ -8,7 +8,7 @@
 
 Disinformation Labs™ is a standalone Syndrome™ companion app. It combines a Richard Doty / MJ-12 dossier archive, country-specific news snapshots, transparent headline comparisons, regional coverage maps, and a clearly labeled fictional memorandum studio.
 
-[Download the latest release](https://github.com/Rali0s/Disinformation-Labs/releases/latest) · [User guide](docs/user-guide.md) · [Release notes](docs/releases/v1.5.1.md)
+[Download the latest release](https://github.com/Mik3XC/Disinformation-Labs/releases/latest) · [User guide](docs/user-guide.md) · [Release notes](docs/releases/v1.5.1.md)
 
 ## Workspace preview
 
@@ -27,13 +27,13 @@ The Majestic 12 dossier in the macOS app, with the blue alien emblem, archive na
 | Multi-city studies | Compare reference articles across 2–12 cities, with separate distance and publication-time comparisons. |
 | Coverage map | Explore regional headline counts and manual tone/format annotations on an offline map. |
 | Publication projects | Register publications, manually record site analytics and linked mentions, and inspect documented geographic spread. |
-| Fictional memo studio | Write and export labeled fictional memoranda in typewriter, fax, or photocopy styles, with paginated PDF output. |
+| Fictional document studio | Write labeled memoranda or FOIA-style mockups with optional cover sheets, simulated release stamps, black redaction bars, and paginated PDF output. |
 
 Supported English news editions: **United States, United Kingdom, Canada, Australia, New Zealand, Ireland, India, Singapore, and South Africa**. The bundled place catalog includes 32,350 US places and 23,638 international places. Country and city controls do not download additional feeds until you explicitly refresh.
 
 ## Install
 
-1. Download the macOS ZIP from [Releases](https://github.com/Rali0s/Disinformation-Labs/releases).
+1. Download the macOS ZIP from [Releases](https://github.com/Mik3XC/Disinformation-Labs/releases).
 2. Extract **Disinformation Labs.app** and move it to Applications.
 3. Open the app. The first published binary targets **Apple Silicon (arm64), macOS 14 or later**.
 
@@ -50,7 +50,7 @@ Keep the checksum file and ZIP in the same directory when checking.
 Requires macOS 14 or later and Apple's Swift command-line tools with Swift 5.9 or newer. There are no third-party Swift packages or API keys.
 
 ```sh
-git clone https://github.com/Rali0s/Disinformation-Labs.git
+git clone https://github.com/Mik3XC/Disinformation-Labs.git
 cd Disinformation-Labs
 zsh scripts/build-app.sh
 open "dist/Disinformation Labs.app"
@@ -69,7 +69,7 @@ zsh scripts/build-icon.sh
 zsh scripts/package-release.sh
 ```
 
-Release output is written to `dist/releases/v1.5.1/`. Generated builds, test PDFs, and local output are excluded from Git.
+Release output is written to `dist/releases/v<app-version>/`. Generated builds, test PDFs, and local output are excluded from Git.
 
 ## How to interpret the results
 
@@ -88,6 +88,16 @@ Sprawl = 100 × (1 − sum(regionalShare²))
 No qualifying locations means Unknown; one region scores 0; two equally represented regions score 50. This describes the recorded sample, not audience reach or total web coverage. Full definitions and examples are in the [user guide](docs/user-guide.md).
 
 The memorandum studio labels exports as fictional simulations. Dossier allegations and generated examples are not authenticated government records.
+
+## FOIA mockup studio (1.6.0)
+
+Open **Workshop → New FOIA mockup**. You can also switch an existing draft's **Document layout** to **FOIA mockup**. Fill in the title, reference, recipient, fictional records office, record date, and mock release date. Dates are editable text for the fictional record. Add a simulated withholding label and choose whether to include an archive cover sheet.
+
+Choose typewriter, fax, or photocopy styling, then adjust aging and redaction. **Preview** uses the same page renderer as **Export mockup → Export PDF**. Text export is also available. Metadata is saved with each draft; switching back to Memorandum preserves the FOIA settings for later use.
+
+Every page carries fixed **FOIA MOCKUP / FICTIONAL SIMULATION** and **NOT AN AUTHENTIC GOVERNMENT RECORD** labels, a watermark, a `SIM-` record identifier, and page numbering. Release status is derived from the redaction setting. These are original fictional documents, not modified FOIA source PDFs or authenticated releases.
+
+Black bars replace body words before PDF layout; original withheld words are absent from the exported text layer. The redaction slider is a deterministic visual treatment, not a manual word-selection tool. Titles, dates, reference IDs, and other metadata remain visible. Editable drafts and workspace backups retain the original text.
 
 ## Data and network behavior
 

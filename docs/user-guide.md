@@ -220,3 +220,13 @@ Geography requires both an analyst-confirmed relationship and an explicitly docu
 The project map uses the existing offline outlines and region markers, colored by qualifying external URL count for the selected map country. The index covers all countries represented in the project's recorded geography. Source-locality support currently follows the app's nine-country catalog. The list of observations remains available alongside the map.
 
 **Export** writes the project's publication records, analytics history, linked evidence, source-location rationale, metric definitions, and interpretation limits to a text report. The news/studies archive also includes publication projects. Older archives without projects remain valid. Imports preserve existing projects; a colliding imported project receives a new project ID while retaining the internal links among its records.
+
+## FOIA-style mockups (1.6.0)
+
+Open **Workshop → New FOIA mockup**. You can also switch an existing draft's **Document layout** to **FOIA mockup**. Fill in the title, reference, recipient, fictional records office, record date, and mock release date. Dates are editable text for the fictional record. Add a simulated withholding label and choose whether to include an archive cover sheet.
+
+Choose typewriter, fax, or photocopy styling, then adjust aging and redaction. **Preview** uses the same page renderer as **Export mockup → Export PDF**. Text export is also available. Metadata is saved with each draft; switching back to Memorandum preserves the FOIA settings for later use.
+
+Every page carries fixed **FOIA MOCKUP / FICTIONAL SIMULATION** and **NOT AN AUTHENTIC GOVERNMENT RECORD** labels, a watermark, a `SIM-` record identifier, and page numbering. Release status is derived from the redaction setting. These are original fictional documents, not modified FOIA source PDFs or authenticated releases.
+
+Black bars replace body words before PDF layout; original withheld words are absent from the exported text layer. The redaction slider is a deterministic visual treatment, not a manual word-selection tool. Titles, dates, reference IDs, and other metadata remain visible. Editable drafts and workspace backups retain the original text.
